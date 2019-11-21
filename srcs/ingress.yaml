@@ -1,0 +1,17 @@
+apiVersion: ingress/v1
+kind: Ingress
+metadata:
+  name: ingress
+spec:
+  rules:
+    http:
+	  paths:
+	  - backend:
+	    serviceName: ft_server(80)
+		servicePort: 80
+  tls:
+	http:
+	  paths:
+	  - backend:
+	    serviceName: ft_server(443)
+		servicePort: 443

@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ft-server 
+  labels:
+    app: ft_server
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: ft_server
+  template:
+    metadata:
+      labels:
+        app: ft_server
+    spec:
+      containers:
+      - name: ft-server
+        image: ft_server:v1
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 80
