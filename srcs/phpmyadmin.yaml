@@ -1,22 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: ft-server 
+  name: phpmyadmin 
   labels:
-    app: ft_server
+    app: phpmyadmin
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: ft_server
+      app: phpmyadmin
   template:
     metadata:
       labels:
-        app: ft_server
+        app: phpmyadmin
     spec:
       containers:
-      - name: ft-server
-        image: ft_server:v1
+      - name: phpmyadmin
+        image: phpmyadmin:v1
         imagePullPolicy: Never
         ports:
-        - containerPort: 80
+        - containerPort: 5000

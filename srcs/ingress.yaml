@@ -1,17 +1,14 @@
-apiVersion: ingress/v1
+apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
-  name: ingress
+  name: test-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   rules:
-    http:
-	  paths:
-	  - backend:
-	    serviceName: ft_server(80)
-		servicePort: 80
-  tls:
-	http:
-	  paths:
-	  - backend:
-	    serviceName: ft_server(443)
-		servicePort: 443
+  - http:
+      paths:
+      - path: /wordpress
+        backend:
+          serviceName: wordpress
+          servicePort: 5050
