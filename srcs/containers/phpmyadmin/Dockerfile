@@ -5,5 +5,6 @@ RUN cd /tmp/ \
 && wget https://files.phpmyadmin.net/phpMyAdmin/4.9.1/phpMyAdmin-4.9.1-all-languages.tar.gz \
 && tar xvf phpMyAdmin-4.9.1-all-languages.tar.gz \
 && mv phpMyAdmin-4.9.1-all-languages /var/www/phpmyadmin \
+&& chmod -R 777 /var/www \
 && rm -rf /tmp/*
 COPY srcs/default /etc/nginx/conf.d/default.conf
