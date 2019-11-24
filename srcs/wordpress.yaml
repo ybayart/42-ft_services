@@ -4,8 +4,9 @@ metadata:
   name: wordpress 
   labels:
     app: wordpress
+    label: mysql
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: wordpress

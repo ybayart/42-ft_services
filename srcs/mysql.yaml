@@ -1,22 +1,23 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: grafana 
+  name: mysql 
   labels:
-    app: grafana
+    app: mysql
+    label: mysql
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
-      app: grafana
+      app: mysql
   template:
     metadata:
       labels:
-        app: grafana
+        app: mysql
     spec:
       containers:
-      - name: grafana
-        image: grafana:v1
+      - name: mysql
+        image: mysql:v1
         imagePullPolicy: Never
         ports:
-        - containerPort: 3000
+        - containerPort: 80

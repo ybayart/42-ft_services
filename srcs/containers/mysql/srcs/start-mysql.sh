@@ -12,6 +12,7 @@ GRANT ALL PRIVILEGES ON *.* TO 'root'@'localhost' WITH GRANT OPTION;
 UPDATE user SET password=PASSWORD("") WHERE user='root' AND host='localhost';
 CREATE USER 'web'@'%' IDENTIFIED BY 'motdepasse';
 GRANT ALL ON *.* TO 'web'@'%';
+CREATE DATABASE wordpress;
 EOF
 
 /usr/bin/mysqld --user=mysql --bootstrap --verbose=0 --skip-name-resolve --skip-networking=0 < $tfile

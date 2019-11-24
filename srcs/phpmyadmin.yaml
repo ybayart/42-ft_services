@@ -4,8 +4,9 @@ metadata:
   name: phpmyadmin 
   labels:
     app: phpmyadmin
+    label: mysql
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: phpmyadmin
