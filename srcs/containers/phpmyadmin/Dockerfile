@@ -7,4 +7,5 @@ RUN cd /tmp/ \
 && mv phpMyAdmin-4.9.1-all-languages /var/www/phpmyadmin \
 && chmod -R 777 /var/www \
 && rm -rf /tmp/*
+COPY srcs/config.inc.php /var/www/phpmyadmin
 COPY srcs/default /etc/nginx/conf.d/default.conf

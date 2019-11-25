@@ -4,9 +4,8 @@ metadata:
   name: wordpress 
   labels:
     app: wordpress
-    label: mysql
+    bdd: mysql
 spec:
-  replicas: 1
   selector:
     matchLabels:
       app: wordpress
@@ -21,3 +20,17 @@ spec:
         imagePullPolicy: Never
         ports:
         - containerPort: 5050
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: wordpress
+spec:
+  type: ClusterIP
+  ports:
+  - port: 5050
+    protocol: TCP
+    name: http
+  selector:
+    app: wordpress
+

@@ -1,27 +1,27 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mysql 
+  name: influxdb 
   labels:
-    app: mysql
+    app: influxdb
 spec:
   selector:
     matchLabels:
-      app: mysql
+      app: influxdb
   template:
     metadata:
       labels:
-        app: mysql
+        app: influxdb
     spec:
       containers:
-      - name: mysql
-        image: mysql:v1
+      - name: influxdb
+        image: influxdb:v1
         imagePullPolicy: Never
         ports:
         - containerPort: 80
         volumeMounts:
         - name: data
-          mountPath: /var/lib/mysql
+          mountPath: /var/lib/influxdb
         livenessProbe:
           exec:
             command: ["mysqladmin", "ping"]
@@ -31,25 +31,25 @@ spec:
       volumes:
       - name: data
         persistentVolumeClaim:
-          claimName: mysql
+          claimName: influxdb
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: mysql
+  name: influxdb
 spec:
   type: NodePort
   ports:
-  - port: 3306
+  - port: 8086
     protocol: TCP
-    name: sql
+    name: influx
   selector:
-    app: mysql
+    app: influxdb
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: mysql
+  name: influxdb
 spec:
   accessModes:
   - ReadWriteOnce
