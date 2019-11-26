@@ -1,3 +1,4 @@
+sh /bin/startscript/start-telegraf.sh
 mkdir -p /run/mysqld
 chown -R mysql:mysql /run/mysqld
 chown -R mysql:mysql /var/lib/mysql
@@ -18,4 +19,13 @@ EOF
 /usr/bin/mysqld --user=mysql --bootstrap --verbose=0 --skip-name-resolve --skip-networking=0 < $tfile
 rm -f $tfile
 
-/usr/bin/mysqld --user=mysql --console --skip-name-resolve --skip-networking=0
+screen -dmS mysql /usr/bin/mysqld --user=mysql --console --skip-name-resolve --skip-networking=0
+
+echo "Waiting"
+while ! mysqladmin ping
+do
+	sleep 1
+done
+
+echo "Importing dump"
+mysql wordpress < /bin/startscript/wordpress.sql

@@ -1,6 +1,6 @@
 FROM nginx:v1
 MAINTAINER ybayart
-RUN apk add --no-cache wget \
+RUN apk add wget \
     libmcrypt-dev zlib-dev gmp-dev \
     freetype-dev libjpeg-turbo-dev libpng-dev \
     php7-json php7-zlib php7-xml php7-pdo php7-phar php7-openssl \
@@ -14,4 +14,5 @@ RUN cd /tmp/ \
 && mv wordpress /var/www/wordpress \
 && chmod -R 777 /var/www \
 && rm -rf /tmp/*
+RUN sed -i -e "s/\"nginx\"/\"wordpress\"/g" /etc/telegraf/telegraf.conf
 COPY srcs/default /etc/nginx/conf.d/default.conf

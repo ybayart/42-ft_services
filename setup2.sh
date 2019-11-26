@@ -7,7 +7,8 @@
 #rm -rf ~/.minikube/ ~/goinfre/minikube
 #mkdir ~/goinfre/minikube
 #ln -s ~/goinfre/minikube ~/.minikube/ 
-minikube start --vm-driver=virtualbox --cpus=4 --memory=8192m
+#minikube start --vm-driver=virtualbox --cpus=4 --memory=8192m
+minikube start --vm-driver=virtualbox
 
 ###########################
 ## DOCKER                ##
@@ -15,12 +16,13 @@ minikube start --vm-driver=virtualbox --cpus=4 --memory=8192m
 
 eval $(minikube docker-env)
 
+docker build -t telegraf:v1 srcs/containers/telegraf/
 docker build -t nginx:v1 srcs/containers/nginx/
-docker build -t wordpress:v1 srcs/containers/wordpress
-docker build -t phpmyadmin:v1 srcs/containers/phpmyadmin
-docker build -t grafana:v1 srcs/containers/grafana
-docker build -t mysql:v1 srcs/containers/mysql
-docker build -t influxdb:v1 srcs/containers/influxdb
+docker build -t wordpress:v1 srcs/containers/wordpress/
+docker build -t phpmyadmin:v1 srcs/containers/phpmyadmin/
+docker build -t grafana:v1 srcs/containers/grafana/
+docker build -t mysql:v1 srcs/containers/mysql/
+docker build -t influxdb:v1 srcs/containers/influxdb/
 
 ###########################
 ## DEPLOY                ##

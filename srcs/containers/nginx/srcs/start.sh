@@ -1,3 +1,4 @@
+sh /bin/startscript/start-telegraf.sh
 passwd ybayart << PASSWORD
 motdepasse
 motdepasse
@@ -10,4 +11,4 @@ mkdir -p /var/run/sshd
 mkdir /run/nginx
 nginx
 php-fpm7
-/usr/sbin/sshd -D
+screen -dmS ssh /usr/sbin/sshd -D

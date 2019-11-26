@@ -1,0 +1,37 @@
+server
+{
+    listen 80;
+    server_name _;
+    return 301 https://$host$request_uri;
+}
+
+server
+{
+    listen 443 ssl;
+    server_name _;
+
+    charset utf-8;
+    index index.html index.php;
+    client_max_body_size 10M;
+
+    ssl_certificate /etc/nginx/certs/server.crt;
+    ssl_certificate_key /etc/nginx/certs/server.key;
+
+    access_log /var/log/nginx/web-access.log combined;
+    error_log /var/log/nginx/web-error.log error;
+
+    root /var/www/;
+
+    location = /favicon.ico {
+        access_log off;
+        log_not_found off;
+    }
+
+    location ~ \.php$ {
+        fastcgi_index index.php;
+        include /etc/nginx/fastcgi_params;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        fastcgi_pass 127.0.0.1:9000;
+    }
+}
+

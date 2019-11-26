@@ -23,8 +23,9 @@ spec:
         - name: data
           mountPath: /var/lib/influxdb
         livenessProbe:
-          exec:
-            command: ["mysqladmin", "ping"]
+          httpGet:
+            path: /ping?verbose=true
+            port: 8086
           initialDelaySeconds: 30
           periodSeconds: 10
           timeoutSeconds: 5
@@ -38,7 +39,7 @@ kind: Service
 metadata:
   name: influxdb
 spec:
-  type: NodePort
+  type: ClusterIP
   ports:
   - port: 8086
     protocol: TCP
