@@ -1,6 +1,6 @@
-sh /bin/startscript/start-telegraf.sh
 passwd ftpuser << PASSWORD
 pass
 pass
 PASSWORD
-screen -dmS ftps vsftpd
+sh /bin/startscript/start-telegraf.sh
+screen -dmS ftps vsftpd /etc/vsftpd/vsftpd.conf

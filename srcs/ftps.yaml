@@ -18,6 +18,7 @@ spec:
         image: ftps:v1
         imagePullPolicy: Never
         ports:
+        - containerPort: 20
         - containerPort: 21
 ---
 apiVersion: v1
@@ -25,8 +26,11 @@ kind: Service
 metadata:
   name: ftps
 spec:
-  type: ClusterIP
+  type: NodePort
   ports:
+  - port: 20
+    protocol: TCP
+    name: 20-ftps
   - port: 21
     protocol: TCP
     name: ftps
