@@ -25,9 +25,9 @@ spec:
         livenessProbe:
           exec:
             command: ["mysqladmin", "ping"]
-          initialDelaySeconds: 30
-          periodSeconds: 10
-          timeoutSeconds: 5
+          initialDelaySeconds: 60
+          periodSeconds: 20
+          timeoutSeconds: 10
       volumes:
       - name: data
         persistentVolumeClaim:

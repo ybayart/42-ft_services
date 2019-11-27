@@ -50,18 +50,37 @@ sudo kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx
 
 minikube addons enable ingress
 
-##########################
-## PORT-FORWARD         ##
-##########################
-
-screen -dmS t1 sudo kubectl port-forward service/ftps 6021:21
-screen -dmS t2 sudo kubectl port-forward service/nginx 6022:22
-screen -dmS t3 sudo kubectl port-forward service/wordpress 5050
-screen -dmS t4 sudo kubectl port-forward service/phpmyadmin 5000
-screen -dmS t5 sudo kubectl port-forward service/grafana 3000
-
 ###########################
 ## DASHBOARD             ##
 ###########################
 
+echo "Attente avant démarrage de la Dashboard"
+sleep 10
 screen -dmS t0 minikube dashboard
+
+##########################
+## PORT-FORWARD         ##
+##########################
+
+echo "Attente avant démarrage des redirections"
+sleep 20
+
+sudo screen -dmS t1 kubectl port-forward service/ftps 6021:21
+sudo screen -dmS t2 kubectl port-forward service/nginx 6022:22
+sudo screen -dmS t3 kubectl port-forward service/wordpress 5050
+sudo screen -dmS t4 kubectl port-forward service/phpmyadmin 5000
+sudo screen -dmS t5 kubectl port-forward service/grafana 3000
+
+sudo screen -dmS t10 kubectl port-forward service/ftps 10000:10000
+sudo screen -dmS t11 kubectl port-forward service/ftps 10001:10001
+sudo screen -dmS t12 kubectl port-forward service/ftps 10002:10002
+sudo screen -dmS t13 kubectl port-forward service/ftps 10003:10003
+sudo screen -dmS t14 kubectl port-forward service/ftps 10004:10004
+sudo screen -dmS t15 kubectl port-forward service/ftps 10005:10005
+sudo screen -dmS t16 kubectl port-forward service/ftps 10006:10006
+sudo screen -dmS t17 kubectl port-forward service/ftps 10007:10007
+sudo screen -dmS t18 kubectl port-forward service/ftps 10008:10008
+sudo screen -dmS t19 kubectl port-forward service/ftps 10009:10009
+sudo screen -dmS t20 kubectl port-forward service/ftps 10010:10010
+
+

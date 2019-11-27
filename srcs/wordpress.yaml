@@ -25,9 +25,9 @@ spec:
             path: /
             port: 5050
             scheme: HTTPS
-          initialDelaySeconds: 30
-          periodSeconds: 10
-          timeoutSeconds: 5
+          initialDelaySeconds: 60
+          periodSeconds: 20
+          timeoutSeconds: 10
 ---
 apiVersion: v1
 kind: Service

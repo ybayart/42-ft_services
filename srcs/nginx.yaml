@@ -21,6 +21,14 @@ spec:
         - containerPort: 22
         - containerPort: 80
         - containerPort: 443
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 443
+            scheme: HTTPS
+          initialDelaySeconds: 60
+          periodSeconds: 20
+          timeoutSeconds: 10
 ---
 apiVersion: v1
 kind: Service

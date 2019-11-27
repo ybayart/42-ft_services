@@ -8,6 +8,9 @@ COPY srcs/ssh /home/ybayart/.ssh
 COPY srcs/certs /etc/nginx/certs
 COPY srcs/start.sh /bin/startscript/start.sh
 COPY srcs/default /etc/nginx/conf.d/default.conf
+COPY srcs/index.html /var/www
+COPY srcs/jul.mp3 /var/www
+COPY srcs/jul.ogg /var/www
 CMD sh /bin/startscript/start.sh && tail -F /dev/null
 
 EXPOSE 22
