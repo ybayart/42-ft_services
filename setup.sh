@@ -2,9 +2,9 @@
 ## INIT                 ##
 ##########################
 
-rm -rf ~/.minikube/ ~/goinfre/minikube
-mkdir ~/goinfre/minikube
-ln -s ~/goinfre/minikube ~/.minikube/ 
+#rm -rf ~/.minikube/ ~/goinfre/minikube
+#mkdir ~/goinfre/minikube
+#ln -s ~/goinfre/minikube ~/.minikube/ 
 minikube start --vm-driver=virtualbox --cpus=4 --memory=5000m
 
 ###########################
@@ -63,20 +63,39 @@ screen -dmS t0 minikube dashboard
 echo "Attente avant démarrage des redirections"
 sleep 20
 
-screen -dmS t1 kubectl port-forward service/ftps 6021:21
+#screen -dmS t1 kubectl port-forward service/ftps 6021:21
 screen -dmS t2 kubectl port-forward service/nginx 6022:22
-screen -dmS t3 kubectl port-forward service/wordpress 5050
-screen -dmS t4 kubectl port-forward service/phpmyadmin 5000
-screen -dmS t5 kubectl port-forward service/grafana 3000
+#screen -dmS t3 kubectl port-forward service/wordpress 5050
+#screen -dmS t4 kubectl port-forward service/phpmyadmin 5000
+#screen -dmS t5 kubectl port-forward service/grafana 3000
 
-screen -dmS t10 kubectl port-forward service/ftps 10000:10000
-screen -dmS t11 kubectl port-forward service/ftps 10001:10001
-screen -dmS t12 kubectl port-forward service/ftps 10002:10002
-screen -dmS t13 kubectl port-forward service/ftps 10003:10003
-screen -dmS t14 kubectl port-forward service/ftps 10004:10004
-screen -dmS t15 kubectl port-forward service/ftps 10005:10005
-screen -dmS t16 kubectl port-forward service/ftps 10006:10006
-screen -dmS t17 kubectl port-forward service/ftps 10007:10007
-screen -dmS t18 kubectl port-forward service/ftps 10008:10008
-screen -dmS t19 kubectl port-forward service/ftps 10009:10009
-screen -dmS t20 kubectl port-forward service/ftps 10010:10010
+#screen -dmS t10 kubectl port-forward service/ftps 10000:10000
+#screen -dmS t11 kubectl port-forward service/ftps 10001:10001
+#screen -dmS t12 kubectl port-forward service/ftps 10002:10002
+#screen -dmS t13 kubectl port-forward service/ftps 10003:10003
+#screen -dmS t14 kubectl port-forward service/ftps 10004:10004
+#screen -dmS t15 kubectl port-forward service/ftps 10005:10005
+#screen -dmS t16 kubectl port-forward service/ftps 10006:10006
+#screen -dmS t17 kubectl port-forward service/ftps 10007:10007
+#screen -dmS t18 kubectl port-forward service/ftps 10008:10008
+#screen -dmS t19 kubectl port-forward service/ftps 10009:10009
+#screen -dmS t20 kubectl port-forward service/ftps 10010:10010
+
+sudo sed -ie '/# Added by ft_services/,/# End of ft_services/d' /etc/hosts
+
+echo "Waiting of ingress ip"
+IP=`kubectl get ingress -o=custom-columns='ADDRESS:status.loadBalancer.ingress[0].ip'|tail -n1`
+while [ $IP = '<none>' ]
+do
+	sleep 1
+	IP=`kubectl get ingress -o=custom-columns='ADDRESS:status.loadBalancer.ingress[0].ip'|tail -n1`
+done
+
+echo "# Added by ft_services
+$IP nginx.ft-services
+$IP grafana.ft-services
+$IP phpmyadmin.ft-services
+$IP wordpress.ft-services
+127.0.0.1 ssh.ft-services
+$IP ftp.ft-services
+# End of ft_services" | sudo tee -a /etc/hosts

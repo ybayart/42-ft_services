@@ -18,19 +18,7 @@ spec:
         image: ftps:v1
         imagePullPolicy: Never
         ports:
-        - containerPort: 20
         - containerPort: 21
-        - containerPort: 10000
-        - containerPort: 10001
-        - containerPort: 10002
-        - containerPort: 10003
-        - containerPort: 10004
-        - containerPort: 10005
-        - containerPort: 10006
-        - containerPort: 10007
-        - containerPort: 10008
-        - containerPort: 10009
-        - containerPort: 10010
         livenessProbe:
           tcpSocket:
             port: 21
@@ -42,46 +30,11 @@ kind: Service
 metadata:
   name: ftps
 spec:
-  type: ClusterIP
+  type: NodePort
   ports:
-  - port: 20
-    protocol: TCP
-    name: 20-ftps
   - port: 21
+    nodePort: 30021
     protocol: TCP
     name: 21-ftps
-  - port: 10000
-    protocol: TCP
-    name: 10000-ftps
-  - port: 10001
-    protocol: TCP
-    name: 10001-ftps
-  - port: 10002
-    protocol: TCP
-    name: 10002-ftps
-  - port: 10003
-    protocol: TCP
-    name: 10003-ftps
-  - port: 10004
-    protocol: TCP
-    name: 10004-ftps
-  - port: 10005
-    protocol: TCP
-    name: 10005-ftps
-  - port: 10006
-    protocol: TCP
-    name: 10006-ftps
-  - port: 10007
-    protocol: TCP
-    name: 10007-ftps
-  - port: 10008
-    protocol: TCP
-    name: 10008-ftps
-  - port: 10009
-    protocol: TCP
-    name: 10009-ftps
-  - port: 10010
-    protocol: TCP
-    name: 10010-ftps
   selector:
     app: ftps

@@ -10,15 +10,19 @@ USE mysql;
 FLUSH PRIVILEGES;
 GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY "motdepasse" WITH GRANT OPTION;
 GRANT ALL PRIVILEGES ON *.* TO 'root'@'localhost' WITH GRANT OPTION;
-UPDATE user SET password=PASSWORD("") WHERE user='root' AND host='localhost';
+ALTER USER 'root'@'localhost' IDENTIFIED BY '';
 CREATE USER 'web'@'%' IDENTIFIED BY 'motdepasse';
 GRANT ALL ON *.* TO 'web'@'%';
 CREATE DATABASE wordpress;
+FLUSH PRIVILEGES;
 EOF
 
+echo "toto"
+#/usr/bin/mysqld_safe –skip-grant-tables –skip-networking < $tfile
 /usr/bin/mysqld --user=mysql --bootstrap --verbose=0 --skip-name-resolve --skip-networking=0 < $tfile
 rm -f $tfile
 
+echo "tata"
 screen -dmS mysql /usr/bin/mysqld --user=mysql --console --skip-name-resolve --skip-networking=0
 
 echo "Waiting"
@@ -28,4 +32,4 @@ do
 done
 
 echo "Importing dump"
-mysql wordpress < /bin/startscript/wordpress.sql
+mysql -u root wordpress < /bin/startscript/wordpress.sql

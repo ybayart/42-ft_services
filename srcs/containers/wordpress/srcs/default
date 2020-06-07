@@ -1,15 +1,11 @@
 server
 {
-	listen 5050 ssl;
+	listen 5050;
 	server_name _;
 
     charset utf-8;
     index index.html index.php;
     client_max_body_size 10M;
-
-	ssl on;
-	ssl_certificate /etc/nginx/certs/server.crt;
-	ssl_certificate_key /etc/nginx/certs/server.key;
 
 	access_log /var/log/nginx/web-access.log combined;
     error_log /var/log/nginx/web-error.log error;
