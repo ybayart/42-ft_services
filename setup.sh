@@ -23,10 +23,25 @@ docker build -t mysql:v1 srcs/containers/mysql/
 docker build -t influxdb:v1 srcs/containers/influxdb/
 
 ###########################
+## LOADBALANCER          ##
+###########################
+
+kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.3/manifests/namespace.yaml
+kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.3/manifests/metallb.yaml
+kubectl create secret generic -n metallb-system memberlist --from-literal=secretkey="$(openssl rand -base64 128)"
+
+IP=`minikube ip`
+
+cp srcs/metallb_base.yaml srcs/metallb.yaml
+sed -ie "s/IPTMP/$IP/g" srcs/metallb.yaml
+
+###########################
 ## DEPLOY                ##
 ###########################
 
 kubectl create secret tls nginx --key srcs/containers/nginx/srcs/certs/server.key --cert srcs/containers/nginx/srcs/certs/server.crt
+
+kubectl create -f srcs/metallb.yaml
 
 kubectl create -f srcs/ftps.yaml
 
@@ -40,15 +55,6 @@ kubectl create -f srcs/mysql.yaml
 kubectl create -f srcs/influxdb.yaml
 
 ###########################
-## INGRESS               ##
-###########################
-
-kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/mandatory.yaml
-kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/provider/cloud-generic.yaml
-
-minikube addons enable ingress
-
-###########################
 ## DASHBOARD             ##
 ###########################
 
@@ -56,15 +62,15 @@ echo "Attente avant démarrage de la Dashboard"
 sleep 10
 screen -dmS t0 minikube dashboard
 
-##########################
-## PORT-FORWARD         ##
-##########################
+###########################
+## PORT-FORWARD          ##
+###########################
 
-echo "Attente avant démarrage des redirections"
-sleep 20
+#echo "Attente avant démarrage des redirections"
+#sleep 20
 
 #screen -dmS t1 kubectl port-forward service/ftps 6021:21
-screen -dmS t2 kubectl port-forward service/nginx 6022:22
+#screen -dmS t2 kubectl port-forward service/nginx 6022:22
 #screen -dmS t3 kubectl port-forward service/wordpress 5050
 #screen -dmS t4 kubectl port-forward service/phpmyadmin 5000
 #screen -dmS t5 kubectl port-forward service/grafana 3000
@@ -80,22 +86,3 @@ screen -dmS t2 kubectl port-forward service/nginx 6022:22
 #screen -dmS t18 kubectl port-forward service/ftps 10008:10008
 #screen -dmS t19 kubectl port-forward service/ftps 10009:10009
 #screen -dmS t20 kubectl port-forward service/ftps 10010:10010
-
-sudo sed -ie '/# Added by ft_services/,/# End of ft_services/d' /etc/hosts
-
-echo "Waiting of ingress ip"
-IP=`kubectl get ingress -o=custom-columns='ADDRESS:status.loadBalancer.ingress[0].ip'|tail -n1`
-while [ $IP = '<none>' ]
-do
-	sleep 1
-	IP=`kubectl get ingress -o=custom-columns='ADDRESS:status.loadBalancer.ingress[0].ip'|tail -n1`
-done
-
-echo "# Added by ft_services
-$IP nginx.ft-services
-$IP grafana.ft-services
-$IP phpmyadmin.ft-services
-$IP wordpress.ft-services
-127.0.0.1 ssh.ft-services
-$IP ftp.ft-services
-# End of ft_services" | sudo tee -a /etc/hosts

@@ -35,28 +35,17 @@ kind: Service
 metadata:
   name: nginx
 spec:
-  type: ClusterIP
+  type: LoadBalancer
   ports:
+  - port: 22
+    protocol: TCP
+    name: ssh
   - port: 80
     protocol: TCP
     name: http
   - port: 443
     protocol: TCP
     name: https
-  selector:
-    app: nginx
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: nginxssh
-spec:
-  type: NodePort
-  ports:
-  - port: 22
-    nodePort: 30022
-    protocol: TCP
-    name: ssh
   selector:
     app: nginx
 ---

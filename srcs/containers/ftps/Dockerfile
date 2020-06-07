@@ -9,6 +9,9 @@ RUN echo "Tu es connecté" > /home/ftpuser/ftp/hello.txt
 RUN sed -i -e "s/TMPBDD/ftps/g" /etc/telegraf/telegraf.conf
 COPY srcs/vsftpd.conf /etc/vsftpd/vsftpd.conf
 COPY srcs/vsftpd.conf /etc/vsftpd.conf
+#COPY srcs/vsftpd /etc/pam.d/
+COPY srcs/vsftpd.pem /etc/ssl/private/
 COPY srcs/start-ftps.sh /bin/startscript/start-ftps.sh
-COPY srcs/vsftpd.pem /etc/ssl/private/vsftpd.pem
 CMD sh /bin/startscript/start-ftps.sh && tail -F /dev/null
+
+EXPOSE 20 21

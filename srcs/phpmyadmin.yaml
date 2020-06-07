@@ -34,7 +34,7 @@ kind: Service
 metadata:
   name: phpmyadmin
 spec:
-  type: ClusterIP
+  type: LoadBalancer
   ports:
   - port: 5000
     protocol: TCP
