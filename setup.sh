@@ -8,12 +8,12 @@
 if [ `uname -s` = 'Linux' ]
 then
 	VMDRIVER="docker"
-	IPCMD="docker inspect minikube|grep \"IPAddress\"\:|head -n1|tr -d '\",'|awk -F ' ' '{print $2}'"
+	VMCORE=2
 else
 	VMDRIVER="virtualbox"
-	IPCMD="minikube ip"
+	VMCORE=4
 fi
-minikube start --vm-driver=$VMDRIVER --cpus=2 --memory=5000m
+minikube start --vm-driver=$VMDRIVER --cpus=$VMCORE --memory=5000m
 
 ###########################
 ## DOCKER                ##
@@ -38,7 +38,12 @@ kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.3/manife
 kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.3/manifests/metallb.yaml
 kubectl create secret generic -n metallb-system memberlist --from-literal=secretkey="$(openssl rand -base64 128)"
 
-IP=`$IPCMD`
+if [ $VMDRIVER = 'docker' ]
+then
+	IP=`docker inspect minikube --format="{{range .NetworkSettings.Networks}}{{.Gateway}}{{end}}"`
+else
+	IP=`minikube ip`
+fi
 
 cp srcs/metallb_base.yaml srcs/metallb.yaml
 sed -i "" -e "s/IPTMP/$IP/g" srcs/metallb.yaml
