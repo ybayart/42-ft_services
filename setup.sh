@@ -5,22 +5,30 @@
 #rm -rf ~/.minikube/ ~/goinfre/minikube
 #mkdir ~/goinfre/minikube
 #ln -s ~/goinfre/minikube ~/.minikube/ 
-minikube start --vm-driver=virtualbox --cpus=4 --memory=5000m
+if [ `uname -s` = 'Linux' ]
+then
+	VMDRIVER="docker"
+	IPCMD="docker inspect minikube|grep \"IPAddress\"\:|head -n1|tr -d '\",'|awk -F ' ' '{print $2}'"
+else
+	VMDRIVER="virtualbox"
+	IPCMD="minikube ip"
+fi
+minikube start --vm-driver=$VMDRIVER --cpus=2 --memory=5000m
 
 ###########################
 ## DOCKER                ##
 ###########################
 
-eval $(minikube docker-env)
+#eval $(minikube docker-env)
 
-docker build -t telegraf:v1 srcs/containers/telegraf/
-docker build -t ftps:v1 srcs/containers/ftps/
-docker build -t nginx:v1 srcs/containers/nginx/
-docker build -t wordpress:v1 srcs/containers/wordpress/
-docker build -t phpmyadmin:v1 srcs/containers/phpmyadmin/
-docker build -t grafana:v1 srcs/containers/grafana/
-docker build -t mysql:v1 srcs/containers/mysql/
-docker build -t influxdb:v1 srcs/containers/influxdb/
+#docker build -t telegraf:v1 srcs/containers/telegraf/
+#docker build -t ftps:v1 srcs/containers/ftps/
+#docker build -t nginx:v1 srcs/containers/nginx/
+#docker build -t wordpress:v1 srcs/containers/wordpress/
+#docker build -t phpmyadmin:v1 srcs/containers/phpmyadmin/
+#docker build -t grafana:v1 srcs/containers/grafana/
+#docker build -t mysql:v1 srcs/containers/mysql/
+#docker build -t influxdb:v1 srcs/containers/influxdb/
 
 ###########################
 ## LOADBALANCER          ##
@@ -30,10 +38,10 @@ kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.3/manife
 kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.3/manifests/metallb.yaml
 kubectl create secret generic -n metallb-system memberlist --from-literal=secretkey="$(openssl rand -base64 128)"
 
-IP=`minikube ip`
+IP=`$IPCMD`
 
 cp srcs/metallb_base.yaml srcs/metallb.yaml
-sed -ie "s/IPTMP/$IP/g" srcs/metallb.yaml
+sed -i "" -e "s/IPTMP/$IP/g" srcs/metallb.yaml
 
 ###########################
 ## DEPLOY                ##
@@ -43,16 +51,16 @@ kubectl create secret tls nginx --key srcs/containers/nginx/srcs/certs/server.ke
 
 kubectl create -f srcs/metallb.yaml
 
-kubectl create -f srcs/ftps.yaml
+#kubectl create -f srcs/ftps.yaml
 
-kubectl create -f srcs/nginx.yaml
+#kubectl create -f srcs/nginx.yaml
 
-kubectl create -f srcs/wordpress.yaml
-kubectl create -f srcs/phpmyadmin.yaml
-kubectl create -f srcs/grafana.yaml
+#kubectl create -f srcs/wordpress.yaml
+#kubectl create -f srcs/phpmyadmin.yaml
+#kubectl create -f srcs/grafana.yaml
 
-kubectl create -f srcs/mysql.yaml
-kubectl create -f srcs/influxdb.yaml
+#kubectl create -f srcs/mysql.yaml
+#kubectl create -f srcs/influxdb.yaml
 
 ###########################
 ## DASHBOARD             ##
