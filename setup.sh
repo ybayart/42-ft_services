@@ -58,31 +58,6 @@ kubectl create -f srcs/influxdb.yaml
 ## DASHBOARD             ##
 ###########################
 
-echo "Attente avant démarrage de la Dashboard"
+echo "Waiting until Dashboard launch"
 sleep 10
 screen -dmS t0 minikube dashboard
-
-###########################
-## PORT-FORWARD          ##
-###########################
-
-#echo "Attente avant démarrage des redirections"
-#sleep 20
-
-#screen -dmS t1 kubectl port-forward service/ftps 6021:21
-#screen -dmS t2 kubectl port-forward service/nginx 6022:22
-#screen -dmS t3 kubectl port-forward service/wordpress 5050
-#screen -dmS t4 kubectl port-forward service/phpmyadmin 5000
-#screen -dmS t5 kubectl port-forward service/grafana 3000
-
-#screen -dmS t10 kubectl port-forward service/ftps 10000:10000
-#screen -dmS t11 kubectl port-forward service/ftps 10001:10001
-#screen -dmS t12 kubectl port-forward service/ftps 10002:10002
-#screen -dmS t13 kubectl port-forward service/ftps 10003:10003
-#screen -dmS t14 kubectl port-forward service/ftps 10004:10004
-#screen -dmS t15 kubectl port-forward service/ftps 10005:10005
-#screen -dmS t16 kubectl port-forward service/ftps 10006:10006
-#screen -dmS t17 kubectl port-forward service/ftps 10007:10007
-#screen -dmS t18 kubectl port-forward service/ftps 10008:10008
-#screen -dmS t19 kubectl port-forward service/ftps 10009:10009
-#screen -dmS t20 kubectl port-forward service/ftps 10010:10010
