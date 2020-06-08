@@ -19,16 +19,16 @@ minikube start --vm-driver=$VMDRIVER --cpus=$VMCORE --memory=5000m
 ## DOCKER                ##
 ###########################
 
-#eval $(minikube docker-env)
+eval $(minikube docker-env)
 
-#docker build -t telegraf:v1 srcs/containers/telegraf/
-#docker build -t ftps:v1 srcs/containers/ftps/
-#docker build -t nginx:v1 srcs/containers/nginx/
-#docker build -t wordpress:v1 srcs/containers/wordpress/
-#docker build -t phpmyadmin:v1 srcs/containers/phpmyadmin/
-#docker build -t grafana:v1 srcs/containers/grafana/
-#docker build -t mysql:v1 srcs/containers/mysql/
-#docker build -t influxdb:v1 srcs/containers/influxdb/
+docker build -t telegraf:v1 srcs/containers/telegraf/
+docker build -t ftps:v1 srcs/containers/ftps/
+docker build -t nginx:v1 srcs/containers/nginx/
+docker build -t wordpress:v1 srcs/containers/wordpress/
+docker build -t phpmyadmin:v1 srcs/containers/phpmyadmin/
+docker build -t grafana:v1 srcs/containers/grafana/
+docker build -t mysql:v1 srcs/containers/mysql/
+docker build -t influxdb:v1 srcs/containers/influxdb/
 
 ###########################
 ## LOADBALANCER          ##
@@ -56,16 +56,16 @@ kubectl create secret tls nginx --key srcs/containers/nginx/srcs/certs/server.ke
 
 kubectl create -f srcs/metallb.yaml
 
-#kubectl create -f srcs/ftps.yaml
+kubectl create -f srcs/ftps.yaml
 
-#kubectl create -f srcs/nginx.yaml
+kubectl create -f srcs/nginx.yaml
 
-#kubectl create -f srcs/wordpress.yaml
-#kubectl create -f srcs/phpmyadmin.yaml
-#kubectl create -f srcs/grafana.yaml
+kubectl create -f srcs/wordpress.yaml
+kubectl create -f srcs/phpmyadmin.yaml
+kubectl create -f srcs/grafana.yaml
 
-#kubectl create -f srcs/mysql.yaml
-#kubectl create -f srcs/influxdb.yaml
+kubectl create -f srcs/mysql.yaml
+kubectl create -f srcs/influxdb.yaml
 
 ###########################
 ## DASHBOARD             ##
