@@ -45,8 +45,9 @@ else
 	IP=`minikube ip`
 fi
 
+IP=`echo $IP|awk -F '.' '{print $1"."$2"."$3"."128}'`
 cp srcs/metallb_base.yaml srcs/metallb.yaml
-sed -i "" -e "s/IPTMP/$IP/g" srcs/metallb.yaml
+sed -ie "s/IPTMP/$IP/g" srcs/metallb.yaml
 
 ###########################
 ## DEPLOY                ##
@@ -74,3 +75,9 @@ kubectl create -f srcs/influxdb.yaml
 echo "Waiting until Dashboard launch"
 sleep 10
 screen -dmS t0 minikube dashboard
+
+###########################
+## FTPS PASV_ADDRESS     ##
+###########################
+
+screen -dmS t1 ./srcs/setup_ftps.sh

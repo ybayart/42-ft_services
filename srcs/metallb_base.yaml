@@ -9,4 +9,4 @@ data:
       - name: default
         protocol: layer2
         addresses:
-          - IPTMP/28
+          - IPTMP/26
